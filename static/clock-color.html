@@ -3,9 +3,9 @@
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="apple-mobile-web-app-capable" content="yes">
-  
-	<title>Sam's BG</title>
-  
+
+	<title>Marks's BG</title>
+
 	<link href="/images/round1.png" rel="icon" id="favicon" type="image/png" />
 	<link rel="apple-touch-icon" sizes="57x57" href="/images/apple-touch-icon-57x57.png">
 	<link rel="apple-touch-icon" sizes="60x60" href="/images/apple-touch-icon-60x60.png">
@@ -16,10 +16,10 @@
 	<link rel="apple-touch-icon" sizes="144x144" href="/images/apple-touch-icon-144x144.png">
 	<link rel="apple-touch-icon" sizes="152x152" href="/images/apple-touch-icon-152x152.png">
 	<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-180x180.png">
-  
+
 	<style type="text/css">
 		@import url("//fonts.googleapis.com/css?family=Open+Sans:700");
-  
+
 		body {
 			text-align: center;
 			margin: 0 0;
@@ -84,13 +84,13 @@
 			</div>
 		</div>
 	</main>
-  
+
 	<script src="/bower_components/jquery/dist/jquery.min.js"></script>
 	<script src="/api/v1/status.js"></script>
 	<script src="/public/js/bundle.js"></script>
-  
+
 	<script type="text/javascript">
-	
+
 		function query ( ) {
 			console.log('query');
 			$.ajax('/api/v1/entries/current.json', { success: render });
@@ -98,12 +98,12 @@
 
 		function render (xhr) {
 			console.log('xhr', xhr);
-			
+
 			var rec = xhr[0];
 			var last = new Date(rec.date);
 			var now = new Date( );
 			var elapsedMins = Math.round(((now - last) / 1000) / 60);
-			
+
 			var bgHigh = window.serverSettings.settings.thresholds.bgHigh;
 			var bgLow = window.serverSettings.settings.thresholds.bgLow;
 			var bgTargetBottom = window.serverSettings.settings.thresholds.bgTargetBottom;
@@ -117,7 +117,7 @@
 				bgTargetBottom = Nightscout.units.mgdlToMMOL(bgTargetBottom);
 				bgTargetTop = Nightscout.units.mgdlToMMOL(bgTargetTop);
 			}
-			
+
 			var bgNum = parseFloat(rec.sgv);
 
 			// These are the particular shades of red, yellow, green, and blue.
@@ -127,13 +127,13 @@
 			var blue = 'rgba(78,143,207,1)';
 
 			var direction = rec.direction;
-			
+
 			// Insert the trend arrow.
 			$('#arrow').attr('src', 'images/'+direction+'.svg');
 
 			// Insert the BG value text.
 			$('#bgnow').text(rec.sgv);
-			
+
 			// Insert the BG stale time text.
 			$('#staleTime').text(elapsedMins+' minutes ago');
 
@@ -153,11 +153,11 @@
 			if (bgNum >= bgHigh) {
 				$('body').css('background-color', red);
 			}
-			
+
 			// Time before data considered stale.
-			var staleMinutes = 13;										
-			var threshold = 1000 * 60 * staleMinutes;			
-			
+			var staleMinutes = 13;
+			var threshold = 1000 * 60 * staleMinutes;
+
 			// Restyle body bg, and make the "x mins ago" visible too.
 			if (now - last > threshold) {
 				$('body').css('background-color', 'grey');
